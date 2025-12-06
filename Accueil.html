@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Recette de Louis</title>
+   <style>
+      h1 {
+         font-size: 4em;
+         font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+      }
+
+      li {
+         font-size: x-large;
+
+      }
+
+      body {
+         font-family: Arial, sans-serif;
+         padding: 20px;
+      }
+
+      .search-container {
+         position: relative;
+         width: 300px;
+      }
+
+      input[type="text"] {
+         width: 100%;
+         padding: 10px;
+         font-size: 16px;
+         border: 1px solid #ccc;
+         border-radius: 4px;
+      }
+
+      .suggestions {
+         position: absolute;
+         width: 100%;
+         background: white;
+         border: 1px solid #ccc;
+         border-top: none;
+         max-height: 200px;
+         overflow-y: auto;
+         z-index: 1000;
+      }
+
+      .suggestions div {
+         padding: 10px;
+         cursor: pointer;
+      }
+
+      .suggestions div:hover {
+         background-color: #f0f0f0;
+      }
+
+      .container {
+         display: grid;
+         grid-template-areas:
+            "header search"
+            "list content"
+            "footer footer";
+         grid-template-columns: 2fr 1fr;
+         gap: 3px;
+         padding: 5px;
+      }
+
+      .container h1.header {
+         grid-area: header;
+      }
+
+      .container div.search-container {
+         grid-area: search;
+      }
+
+      .container ul.list {
+         grid-area: list;
+      }
+
+      a {
+         text-decoration: none;
+         color: black;
+      }
+
+      section {
+         margin-left: 0;
+         margin-top: 0;
+         padding: 20px;
+      }
+   </style>
+</head>
+
+<body>
+   <div class="container">
+
+      <h1 class="header">Recette de Louis</h1>
+
+      <div class="search-container">
+         <h2>Rechercher des recettes</h2>
+         <input type="text" id="search" placeholder="Recherche une recette...">
+         <div id="suggestions" class="suggestions"></div>
+      </div>
+   <ul class="list">
+      <li><a href="Carré aux dattes.html">Carré aux dattes</a></li>
+      <li><a href="Brownies.html">Brownies</a></li>
+      <li><a href="Biscuit.html">Biscuits aux pépites de chocolat</a></li>
+      <li><a href="Limonade.html">Limonade</a></li>
+   </ul>
+   </div>
+</body>
+
+
+<script>
+   // Suggestion list with internal page links
+   const suggestionList = [
+      { name: "Biscuits aux pépites de chocolat", url: "Biscuits aux pépites de chocolat.html" },
+      { name: "Brownies", url: "Brownies.html" },
+      { name: "Carré aux dattes", url: "Carré aux dattes.html" },
+      { name: "Limonade", url: "Limonade.html" },
+   ];
+
+   const searchInput = document.getElementById("search");
+   const suggestionsContainer = document.getElementById("suggestions");
+
+   function showSuggestions(value) {
+      suggestionsContainer.innerHTML = "";
+      if (!value) return;
+
+      const filtered = suggestionList.filter(item =>
+         item.name.toLowerCase().startsWith(value.toLowerCase())
+      );
+
+      filtered.forEach(item => {
+         const div = document.createElement("div");
+         div.textContent = item.name;
+         div.onclick = () => {
+            // Redirect to the internal page
+            window.location.href = item.url;
+         };
+         suggestionsContainer.appendChild(div);
+      });
+   }
+
+   searchInput.addEventListener("input", () => {
+      showSuggestions(searchInput.value.trim());
+   });
+
+   document.addEventListener("click", (e) => {
+      if (!e.target.closest(".search-container")) {
+         suggestionsContainer.innerHTML = "";
+      }
+   });
+</script>
+
+</html>
